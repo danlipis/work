@@ -1,0 +1,45 @@
+ 1- adicionar linhas no 
+ 
+# PGMC HOMOLOGACAO(Administracao Cleartech)
+#
+database        bdb
+suffix          "dc=pgmchom"
+checkpoint      1024 15
+rootdn          "cn=admin,dc=pgmchom"
+rootpw          {SSHA}bk4MdWBTIeXSefT2gf/5wHkOFzVc8rsf
+directory       /var/lib/ldap/pgmchom
+
+++++   overlay ppolicy
+++++   password-hash {CLEARTEXT}
+++++   ppolicy_default "cn=default,ou=policies,dc=pgmchom"
+++++   ppolicy_hash_cleartext yes
+++++   ppolicy_use_lockout yes
+++++   1temporariopgmc55
+ 
+ 
+ 
+ 
+2 - restart ldap
+ /etc/init.d/slapd {stop/start}
+ 
+3 - add nova policiy
+ldapadd -h localhost -D "cn=admin,dc=pgmchom,dc=pgmchom" -W  -ZZ -f pw.ldif
+
+
+
+**OBS: 
+Se pro preciso gerar nova senha:
+slappasswd -h {SSHA}
+New password:
+Re-enter new password:
+{SSHA}O7U8JgZfLqNKuOE5h7IL8PcPhgfq/0bW
+
+Colocar o hash no arquivo /etc/openldap/slapd.conf
+# PGMC HOMOLOGACAO(Administracao Cleartech)
+#
+database        bdb
+suffix          "dc=pgmchom"
+checkpoint      1024 15
+rootdn          "cn=admin,dc=pgmchom"
+>>>>>>>>>>>rootpw          {SSHA}bk4MdWBTIeXSefT2gf/5wHkOFzVc8rsf
+directory       /var/lib/ldap/pgmchom
